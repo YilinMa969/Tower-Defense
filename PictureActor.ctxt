@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=PictureActor
+comment0.text=\n\ Actor\ for\ showing\ static\ images\ like\ cookie\ name\ and\ story.\n\ \n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.04)\n
+comment1.params=imageFile
+comment1.target=PictureActor(java.lang.String)
+comment2.params=imageFile
+comment2.target=void\ setPicture(java.lang.String)
+numComments=3

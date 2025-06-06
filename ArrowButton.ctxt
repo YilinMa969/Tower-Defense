@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=ArrowButton
+comment0.text=\n\ A\ reusable\ arrow\ button\ for\ switching\ cookies.\n\ Direction\ -1\ for\ left,\ +1\ for\ right.\n\ \n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.04)\n
+comment1.params=direction
+comment1.target=ArrowButton(int)
+comment2.params=
+comment2.target=void\ act()
+numComments=3

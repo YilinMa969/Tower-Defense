@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=SelectableCookie
+comment0.text=\n\ Represents\ a\ selectable\ cookie\ character\ with\ animated\ sprite\ frames.\n\ Supports\ big\ or\ small\ size\ versions.\n\ \n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.04)\n
+comment1.params=isBig\ animationPrefix
+comment1.target=SelectableCookie(boolean,\ java.lang.String)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=void\ animate()
+comment4.params=prefix\ isBig
+comment4.target=void\ setAnimationPrefixAndSize(java.lang.String,\ boolean)
+comment5.params=
+comment5.target=void\ loadFrames()
+numComments=6

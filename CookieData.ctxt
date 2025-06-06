@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=CookieData
+comment0.text=\n\ Holds\ data\ for\ each\ cookie\ option.\n\ \n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.04)\n
+comment1.params=animationPrefix\ nameImage\ storyImage\ isBig
+comment1.target=CookieData(java.lang.String,\ java.lang.String,\ java.lang.String,\ boolean)
+numComments=2
