@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=NextButton
+comment0.text=\n\ Button\ to\ proceed\ from\ character\ selection\ to\ the\ main\ game.\n\ \n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.04)\n
+comment1.params=
+comment1.target=NextButton()
+comment2.params=
+comment2.target=void\ act()
+numComments=3
