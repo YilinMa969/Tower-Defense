@@ -1,8 +1,10 @@
 #BlueJ class context
 comment0.target=Enemy
-comment0.text=\n\ Write\ a\ description\ of\ class\ Enemy\ here.\n\ \n\ @author\ (Yilin\ Ma)\ \n\ @version\ (2025.06.05)\n
-comment1.params=
-comment1.target=void\ act()
-comment2.params=target
-comment2.target=void\ moveTo(java.awt.Point)
-numComments=3
+comment0.text=\n\ Enemy\ that\ follows\ a\ path\ and\ flips\ image\ when\ changing\ direction.\n\ Default\ image\ faces\ right;\ flips\ horizontally\ when\ moving\ left.\n\ \n\ Author\:\ Yilin\ Ma\n\ Version\:\ 2025.06.10\n
+comment1.params=imageFile
+comment1.target=Enemy(java.lang.String)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=target
+comment3.target=void\ moveTo(java.awt.Point)
+numComments=4

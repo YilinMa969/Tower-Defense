@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=CharacterSelectWorld
+comment0.text=\n\ Character\ selection\ screen\ for\ choosing\ a\ Cookie.\n\ Shows\ large\ animated\ cookie\ and\ allows\ switching.\n\n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.04)\n
+comment1.params=
+comment1.target=CharacterSelectWorld()
+comment2.params=direction
+comment2.target=void\ changeCookie(int)
+comment3.params=
+comment3.target=java.lang.String\ getSelectedSmallPrefix()
+numComments=4
