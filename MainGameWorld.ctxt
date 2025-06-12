@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=MainGameWorld
+comment0.text=\n\ The\ main\ game\ world\ where\ the\ selected\ cookie\ appears\ in\ small\ size.\n\ \n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.09)\n
+comment1.params=smallPrefix
+comment1.target=MainGameWorld(java.lang.String)
+comment2.params=
+comment2.target=void\ loadPath()
+comment3.params=
+comment3.target=void\ act()
+comment4.params=type
+comment4.target=void\ spawnEnemy(java.lang.String)
+comment5.params=
+comment5.target=void\ setupEnemiesForRound()
+comment6.params=
+comment6.target=void\ nextRound()
+comment7.params=visible
+comment7.target=void\ setWeaponSlotVisibility(boolean)
+comment8.params=
+comment8.target=java.util.List\ getWeaponSlots()
+comment9.params=
+comment9.target=void\ weaponSelect()
+numComments=10

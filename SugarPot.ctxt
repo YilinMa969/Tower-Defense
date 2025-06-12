@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=SugarPot
+comment0.text=\n\ Write\ a\ description\ of\ class\ SugarPot\ here.\n\ \n\ @author\ Briannie\ Law\ \n\ @version\ 6/9/2025\n
+comment1.params=x\ y
+comment1.target=SugarPot(int,\ int)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=enemy
+comment3.target=void\ attack(Enemy)
+comment4.params=
+comment4.target=Weapons\ createCopy()
+numComments=5

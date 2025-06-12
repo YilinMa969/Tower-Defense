@@ -4,7 +4,7 @@ import greenfoot.*;
  * Button to proceed from character selection to the main game.
  * 
  * @author (Yilin Ma)
- * @version (2025.06.04)
+ * @version (2025.06.06)
  */
 class NextButton extends Actor {
     
