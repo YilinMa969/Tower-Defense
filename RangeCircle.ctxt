@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=RangeCircle
+comment0.text=\r\n\ While\ dragging\ a\ tower,\ this\ shows\ the\ range\ that\ the\ Weapon\ can\ shoot\ to.\ \r\n\ \r\n\ @author\ Briannie\ Law\r\n\ @version\ 6/11/2025\r\n
+comment1.params=radius
+comment1.target=RangeCircle(int)
+numComments=2
