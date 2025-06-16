@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=WeaponSlot
-comment0.text=\n\ Write\ a\ description\ of\ class\ WeaponSlot\ here.\n\ \n\ @author\ Briannie\ Law\n\ @version\ 6/11/2025\n
+comment0.text=\n\ Write\ a\ description\ of\ class\ WeaponSlot\ here.\n\ When\ dragging\ a\ weapon,\ the\ free\ base\ will\ show\ a\ semi-transparent\ hint.\ \n\ When\ a\ weapon\ is\ successfully\ placed,\ the\ corresponding\ base\ becomes\ opaque\ and\ is\ marked\ as\ occupied.\n\ When\ weapon\ placement\ fails,\ the\ base\ remains\ hidden.\n\ \n\ @author\ Briannie\ Law\ &\ Yilin\ Ma\n\ @version\ 6/12/2025\n
 comment1.params=
 comment1.target=boolean\ isOccupied()
 comment2.params=

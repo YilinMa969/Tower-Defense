@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=BubbleOverlay
+comment0.text=\n\ Shows\ a\ bubble\ image\ attached\ to\ a\ bubbled\ enemy.\n\ \n\ @author\ Yilin\ Ma\n\ @version\ 2025.6.13\n
+comment1.params=target
+comment1.target=BubbleOverlay(Enemy)
+comment2.params=
+comment2.target=void\ act()
+numComments=3

@@ -7,7 +7,7 @@ import greenfoot.*;
  * @author (Yilin Ma)
  * @version (2025.06.04)
  */
-class SelectableCookie extends Actor {
+public class SelectableCookie extends Actor {
     private GreenfootImage[] animationFrames;
     private int frameIndex = 0;
     private int animationCounter = 0;
@@ -50,7 +50,6 @@ class SelectableCookie extends Actor {
         animationFrames = new GreenfootImage[count];
         for (int i = 0; i < count; i++) {
             GreenfootImage img = new GreenfootImage(animationPrefix + i + ".png");
-            if (!isBig) img.scale(img.getWidth() / 2, img.getHeight() / 2);
             animationFrames[i] = img;
         }
     }

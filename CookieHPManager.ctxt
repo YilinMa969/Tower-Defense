@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=CookieHPManager
+comment0.text=\n\ Write\ a\ description\ of\ class\ CookieHPManager\ here.\n\ \n\ @author\ Yilin\ Ma\n\ @version\ 2025.06.16\n
+comment1.params=initialHP
+comment1.target=CookieHPManager(int)
+comment2.params=world
+comment2.target=void\ addedToWorld(greenfoot.World)
+comment3.params=amount
+comment3.target=void\ takeDamage(int)
+comment4.params=
+comment4.target=int\ getHP()
+comment5.params=
+comment5.target=void\ updateDisplay()
+numComments=6

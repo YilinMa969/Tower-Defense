@@ -5,52 +5,128 @@ import java.awt.Point;
  * Enemy that follows a path and flips image when changing direction.
  * Default image faces right; flips horizontally when moving left.
  * 
- * Author: Yilin Ma
- * Version: 2025.06.10
+ * @author (Yilin Ma) 
+ * @version (2025.6.10)
  */
 public class Enemy extends Actor {
     protected GreenfootImage originalImage;
     protected GreenfootImage flippedImage;
+    protected GreenfootImage slowedImage;
+    protected GreenfootImage slowedFlippedImage;
+
     protected boolean facingLeft = false;
+    protected boolean removed = false;
+    protected boolean isSlowed = false;
     protected int pathIndex = 0;
 
-     public Enemy(String imageFile) {
-        originalImage = new GreenfootImage(imageFile);
+    protected int normalSpeed = 2;
+    protected int slowedSpeed = 1;
+
+    protected int slowTimer = 0;  // 减速剩余时间
+    protected final int SLOW_DURATION = 120;
+
+    // 新增泡泡逻辑
+    private boolean bubbled = false;
+    private int bubbleTimer = 0;
+    private final int BUBBLE_DURATION = 120;
+    
+    protected int health = 10; //Edit this to change health of monster
+
+
+    public Enemy(String normalImageFile, String slowedImageFile) {
+        originalImage = new GreenfootImage(normalImageFile);
         flippedImage = new GreenfootImage(originalImage);
         flippedImage.mirrorHorizontally();
+
+        slowedImage = new GreenfootImage(slowedImageFile);
+        slowedFlippedImage = new GreenfootImage(slowedImage);
+        slowedFlippedImage.mirrorHorizontally();
+
         setImage(originalImage);
     }
 
+    // 减速逻辑
+    public void setSlowed(boolean slowed) {
+        if (slowed) {
+            slowTimer = SLOW_DURATION;
+        }
+        this.isSlowed = slowed;
+        updateImage();
+    }
+
+    public boolean isSlowed() {
+        return isSlowed;
+    }
+
+    // 泡泡逻辑
+    public void setBubbled(boolean b) {
+        if (!bubbled && b) {
+            bubbleTimer = BUBBLE_DURATION;
+        }
+        this.bubbled = b;
+    }
+
+    public boolean isBubbled() {
+        return bubbled;
+    }
+
+    private void updateImage() {
+        if (isSlowed) {
+            setImage(facingLeft ? slowedFlippedImage : slowedImage);
+        } else {
+            setImage(facingLeft ? flippedImage : originalImage);
+        }
+    }
+
     public void act() {
+        if (removed) return;
+
+        // 泡泡计时器
+        if (bubbled) {
+            bubbleTimer--;
+            if (bubbleTimer <= 0) {
+                bubbled = false;
+            } else {
+                return; // 泡泡中不动
+            }
+        }
+
+        // 减速计时器
+        if (slowTimer > 0) {
+            slowTimer--;
+            if (slowTimer == 0) {
+                setSlowed(false);
+            }
+        }
+
+        // 路径移动
         if (pathIndex < MainGameWorld.enemyPath.size()) {
             Point target = MainGameWorld.enemyPath.get(pathIndex);
             moveTo(target);
         }
-        
-        // 碰撞检测
+
         if (isTouching(SelectableCookie.class)) {
+            removed = true;
             getWorld().removeObject(this);
-            // 你可以在这里减少玩家生命或其他逻辑
+            // 可添加扣血等逻辑
         }
-    
     }
 
     private void moveTo(Point target) {
         int dx = target.x - getX();
         int dy = target.y - getY();
-        int step = 2;
+        int step = isSlowed ? slowedSpeed : normalSpeed;
 
         if (Math.abs(dx) <= step && Math.abs(dy) <= step) {
             setLocation(target.x, target.y);
             pathIndex++;
         } else {
-            // 正确判断：dx < 0 表示向左，要翻转
             if (dx < 0 && !facingLeft) {
-                setImage(flippedImage); // 向左，翻图
                 facingLeft = true;
+                updateImage();
             } else if (dx > 0 && facingLeft) {
-                setImage(originalImage); // 向右，用原图
                 facingLeft = false;
+                updateImage();
             }
 
             double angle = Math.atan2(dy, dx);
@@ -59,5 +135,13 @@ public class Enemy extends Actor {
             setLocation(newX, newY);
         }
     }
-}
+    
+    public void takeDamage(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            removed = true;
+            getWorld().removeObject(this);
+        }
+    }
 
+}

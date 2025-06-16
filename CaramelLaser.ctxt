@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=CaramelLaser
+comment0.text=\n\ Write\ a\ description\ of\ class\ CaramelLaser\ here.\n\ \n\ @author\ Yilin\ Ma\ \n\ @version\ 2025.6.14\n
+comment1.params=x\ y
+comment1.target=CaramelLaser(int,\ int)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=enemy
+comment3.target=void\ attack(Enemy)
+comment4.params=x\ y
+comment4.target=Weapons\ createCopy(int,\ int)
+comment5.params=
+comment5.target=java.lang.String\ getPriceImageName()
+numComments=6
