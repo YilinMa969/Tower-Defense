@@ -14,9 +14,13 @@ class NextButton extends Actor {
     
     public void act() {
         if (Greenfoot.mouseClicked(this)) {
-            CharacterSelectWorld world = (CharacterSelectWorld) getWorld();
-            String smallPrefix = world.getSelectedSmallPrefix();
-            Greenfoot.setWorld(new MainGameWorld(smallPrefix));
+            CharacterSelectWorld selectWorld = (CharacterSelectWorld) getWorld();
+            String cookieType = selectWorld.getSelectedCookieName();     // 例如 "cocoa"
+            String smallPrefix = selectWorld.getSelectedSmallPrefix();   // 例如 "cocoa_small_"
+            MainGameWorld world = new MainGameWorld(cookieType, smallPrefix);
+            Greenfoot.setWorld(world);
         }
     }
+
+    
 }

@@ -55,6 +55,12 @@ public class CharacterSelectWorld extends World {
     public String getSelectedSmallPrefix() {
         return cookies.get(currentIndex).animationPrefix.replace("_big_", "_small_");
     }
+    
+    public String getSelectedCookieName() {
+        if (currentIndex == 0) return "hazelnut_small_";
+        if (currentIndex == 1) return "blueberry_small_";
+        return "cocoa_small_";
+    }
 }
 
 

@@ -1,22 +1,24 @@
 import greenfoot.*;
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * The main game world where the selected cookie appears in small size.
  * 
  * @author (Yilin Ma)
- * @version (2025.06.09)
+ * @version (2025.06.12)
  */
-class MainGameWorld extends World {
+public class MainGameWorld extends World {
     public static ArrayList<Point> enemyPath = new ArrayList<>();
-    public static ArrayList<Point> enemyPathHigh = new ArrayList<>();  // 抬高版路径
-    private int round = 1;                  // 当前轮数
-    private List<String> enemiesThisRound;  // 本轮待生成敌人类型队列
-    private int enemiesSpawned = 0;         // 本轮已生成敌人数
-    private int spawnDelay = 60;             // 生成间隔帧数
-    private int spawnCounter = 0;            // 生成计时器
+    private int round = 1;
+    private List<String> enemiesThisRound;
+    private int enemiesSpawned = 0;
+    private int spawnDelay = 100;
+    private int spawnCounter = 0;
+    private StarManager starManager;
+    private CookieHPManager cookieHPManager;
+    private static int attackBoost = 0;
+    private static double fireRateMultiplier = 1.0;
     
     private int[][] weaponSlotPositions = {
         {194, 203}, {675, 203}, {774, 203}, {865, 203},{961, 203},{1055, 203},
@@ -28,14 +30,14 @@ class MainGameWorld extends World {
     
     private List<WeaponSlot> weaponSlots = new ArrayList<>();
     
-    public MainGameWorld(String smallPrefix) {
+    public MainGameWorld(String smallPrefix, String cookieType) {
         super(1280, 800, 1);
         setBackground("map1.png");
         loadPath();
         setupEnemiesForRound();
         
         SelectableCookie player = new SelectableCookie(false, smallPrefix);
-        addObject(player, 1145, 570);
+        addObject(player, 1145, 530);
         
         // 添加隐藏的底座
         for (int[] pos : weaponSlotPositions) {
@@ -45,6 +47,27 @@ class MainGameWorld extends World {
             weaponSlots.add(slot);
         }
         weaponSelect();
+        
+        starManager = new StarManager();
+        addObject(starManager, 313, 54);
+        
+        // 设置饼干效果
+        int initialHP = 10;
+        if (cookieType.equals("hazelnut")) initialHP = 15;
+        cookieHPManager = new CookieHPManager(initialHP);
+        addObject(cookieHPManager, 98, 54);
+        
+        if (cookieType.equals("blueberry")) {
+            fireRateMultiplier = 0.75;
+        } else {
+            fireRateMultiplier = 1.0;
+        }
+        
+        if (cookieType.equals("cocoa")) {
+            attackBoost = 1;
+        } else {
+            attackBoost = 0;
+        }
     }
     
     private void loadPath() {
@@ -71,13 +94,11 @@ class MainGameWorld extends World {
     public void act() {
         spawnCounter++;
         if (spawnCounter >= spawnDelay && enemiesSpawned < enemiesThisRound.size()) {
-            String type = enemiesThisRound.get(enemiesSpawned);
-            spawnEnemy(type);
+            spawnEnemy(enemiesThisRound.get(enemiesSpawned));
             enemiesSpawned++;
             spawnCounter = 0;
         }
 
-        // 如果本轮所有敌人都生成完且屏幕没有敌人了，进入下一轮
         if (enemiesSpawned >= enemiesThisRound.size() && getObjects(Enemy.class).isEmpty()) {
             nextRound();
         }
@@ -101,28 +122,18 @@ class MainGameWorld extends World {
     private void setupEnemiesForRound() {
         enemiesThisRound = new ArrayList<>();
         switch (round) {
-            case 1:
-                for (int i = 0; i < 10; i++) enemiesThisRound.add("small");
-                break;
-            case 2:
-                for (int i = 0; i < 7; i++) enemiesThisRound.add("small");
-                for (int i = 0; i < 3; i++) enemiesThisRound.add("elite");
-                break;
-            case 3:
-                for (int i = 0; i < 4; i++) enemiesThisRound.add("small");
-                for (int i = 0; i < 5; i++) enemiesThisRound.add("elite");
-                enemiesThisRound.add("boss");
-                break;
-            case 4:
-                for (int i = 0; i < 6; i++) enemiesThisRound.add("elite");
-                break;
-            case 5:
-                for (int i = 0; i < 3; i++) enemiesThisRound.add("boss");
-                break;
+            case 1: for (int i = 0; i < 10; i++) enemiesThisRound.add("small"); break;
+            case 2: for (int i = 0; i < 7; i++) enemiesThisRound.add("small");
+                    for (int i = 0; i < 3; i++) enemiesThisRound.add("elite"); break;
+            case 3: for (int i = 0; i < 4; i++) enemiesThisRound.add("small");
+                    for (int i = 0; i < 5; i++) enemiesThisRound.add("elite");
+                    enemiesThisRound.add("boss"); break;
+            case 4: for (int i = 0; i < 6; i++) enemiesThisRound.add("elite"); break;
+            case 5: for (int i = 0; i < 3; i++) enemiesThisRound.add("boss"); break;
         }
-        java.util.Collections.shuffle(enemiesThisRound);
+        Collections.shuffle(enemiesThisRound);
         enemiesSpawned = 0;
-        spawnDelay = Math.max(10, spawnDelay - 5); // 逐轮加快生成速度
+        spawnDelay = Math.max(10, spawnDelay - 5);
     }
 
     private void nextRound() {
@@ -134,6 +145,21 @@ class MainGameWorld extends World {
             // 这里可以写胜利逻辑或结束游戏
         }
     }
+        
+    public void weaponSelect()
+    {
+        SugarPot sugarPot = new SugarPot(559, 50); //Spawn CandyFloss
+        addObject(sugarPot, 559, 50);
+        
+        CandyFloss candyFloss = new CandyFloss(640, 50); //Spawn CandyFloss
+        addObject(candyFloss, 640, 50);
+        
+        CaramelLaser caramelLaser = new CaramelLaser(721, 50); //Spawn CaramelLaser
+        addObject(caramelLaser, 721, 50);
+        
+        Bubblegum bubblegum = new Bubblegum(801, 50); //Spawn Bubblegum
+        addObject(bubblegum, 801, 50);
+    }
     
     // 控制底座显示
     public void setWeaponSlotVisibility(boolean visible) {
@@ -141,16 +167,22 @@ class MainGameWorld extends World {
             slot.setTransparency(visible ? 100 : 0);
         }
     }
-
+    
     // 提供给 Weapons 检查是否放置在槽位中
     public List<WeaponSlot> getWeaponSlots() {
         return weaponSlots;
     }
-        
     
-    public void weaponSelect()
-    {
-        SugarPot sugarPot = new SugarPot(100, 100); //Spawn Spot
-        addObject(sugarPot, 100, 100);
+    // 静态方法让 Weapons 调用
+    public static int getAttackBoost() {
+        return attackBoost;
+    }
+
+    public static double getFireRateMultiplier() {
+        return fireRateMultiplier;
+    }
+    
+    public CookieHPManager getCookieHPManager() {
+        return cookieHPManager;
     }
 }

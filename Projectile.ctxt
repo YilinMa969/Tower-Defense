@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Projectile
+comment0.text=\n\ A\ projectile\ that\ targets\ an\ enemy\ and\ deals\ damage\ on\ hit.\n\ One\ projectile\ per\ weapon\ at\ a\ time\ (controlled\ via\ projectileInFlight).\n\ \n\ @author\ Bri\n\ @version\ 6/13/2025\n
+comment1.params=target\ baseDamage\ owner
+comment1.target=Projectile(Enemy,\ int,\ Weapons)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=other
+comment3.target=double\ getDistanceTo(greenfoot.Actor)
+numComments=4

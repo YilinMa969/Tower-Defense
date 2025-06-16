@@ -1,33 +1,42 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 /**
- * Write a description of class SugarPot here.
+ * A weapon that throws sugar pots at enemies.
+ * Deals low damage, moderate range, fast attack speed.
  * 
- * @author Briannie Law 
+ * @author Bri
  * @version 6/9/2025
  */
-public class SugarPot extends Weapons
-{
-    public SugarPot (int x, int y)
-    {
-        super(x, y, 100, 5, 100, 50); // range, damage, attackSpeed, cost
+public class SugarPot extends Weapons {
+
+    public SugarPot(int spawnX, int spawnY) {
+        super(spawnX, spawnY, 130, 1, 180, 5); // range=130, baseDamage=1, cooldown=180ms, cost=5
         setImage("SugarPot.png");
     }
 
     @Override
-    public void act()
-    {
-        super.act(getWorld().getObjects(Enemy.class)); 
+    public void act() {
+        super.act(); // 父类已经处理了目标寻找、攻击冷却与发射逻辑
     }
 
     @Override
-    public void attack(Enemy enemy)
-    {
-        //enemy.takeDamage(this.damage);
+    public void attack(Enemy enemy) {
+        if (projectileInFlight) return;
+
+        int angle = (int) Math.toDegrees(Math.atan2(enemy.getY() - getY(), enemy.getX() - getX()));
+        setRotation(angle + 90);
+
+        getWorld().addObject(new Projectile(enemy, baseDamage, this), getX(), getY());
+        projectileInFlight = true;
     }
 
     @Override
-    public Weapons createCopy() {
-        return new SugarPot(0, 0);
+    public Weapons createCopy(int spawnX, int spawnY) {
+        return new SugarPot(spawnX, spawnY);
+    }
+
+    @Override
+    protected String getPriceImageName() {
+        return "SugarPot";
     }
 }

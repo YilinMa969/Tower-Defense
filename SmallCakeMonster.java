@@ -3,12 +3,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 /**
  * Write a description of class SmallCakeMonster here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author (Yilin Ma) 
+ * @version (2025.6.10)
  */
 public class SmallCakeMonster extends Enemy
 {
     public SmallCakeMonster() {
-        super("SmallCakeMonsters.png");
+        super("SmallCakeMonsters.png","SmallCakeMonsters_slow.png");
+        this.health = 5;
     }
 }

@@ -1,102 +1,168 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;  
 import java.util.List;
-import java.util.ArrayList;
-
 import java.awt.Rectangle;
 
 /**
- * The Weapons in the game. Weapons can be placed on certain spots on the map.
- * When a weapon kills a cake monster, money goes up. 
- * With enough money, you are able to upgrade the weapon towers, to a max of 3 levels. 
- * Upgrading a weapon lets them do more damage. 
+ * Weapons can be placed, attack enemies, and be modified by cookie effects.
+ * Handles drag-and-drop, cooldowns, damage boost, and fire rate changes.
  * 
- * Range that the weapon is allowed to hit, when upgrade the range increases. Use getObjectsInRange
- * 
- * @author Briannie Law
- * @version 6/6/2025
+ * @author Briannie Law & Yilin Ma
+ * @version 2025-06-16
  */
-
-public abstract class Weapons extends Actor
-{
-    protected int range;               // 攻击范围
-    protected int damage;              // 伤害
-    protected long attackSpeed;        // 攻击速度（每秒攻击次数）
-    protected int cost;                // 造价
-    protected long cooldown;           // 冷却时间（毫秒）
-
-    protected Enemy target;            // 当前攻击目标
+public abstract class Weapons extends Actor {
+    protected int range;
+    protected int baseDamage;
+    protected int cost;
+    protected long attackCooldownMillis;
+    protected long lastAttackTime = 0;
+    protected boolean projectileInFlight = false;
+    protected int damageBoost = 0;
+    protected double fireRateMultiplier = 1.0;
 
     private boolean isDragging = false;
-    private int offsetX, offsetY;      // 鼠标点击偏移，用于拖动
-    private long lastAttackTime = 0;
+    private int offsetX, offsetY;
     private RangeCircle rangeCircle = null;
-    private boolean isLocked = false;  // 是否已固定放置
+    private boolean isLocked = false;
 
-    public abstract void attack(Enemy enemy);
-    public abstract Weapons createCopy();
+    private int spawnX, spawnY;
+    private PictureActor priceTag = null;
+    private boolean priceShown = false;
 
-    public Weapons(int x, int y, int range, int damage, long attackSpeed, int cost) {
+    protected Enemy target = null; // ✅ 修正：添加 target 成员变量
+
+    public Weapons(int spawnX, int spawnY, int range, int baseDamage, long baseCooldownMillis, int cost) {
+        this.spawnX = spawnX;
+        this.spawnY = spawnY;
         this.range = range;
-        this.damage = damage;
-        this.attackSpeed = attackSpeed;
+        this.baseDamage = baseDamage;
+        this.attackCooldownMillis = baseCooldownMillis;
         this.cost = cost;
-        this.cooldown = 0;
-        isLocked = false;
     }
 
-    public void act(List<Enemy> enemies)
-    {
-        super.act();
-        MouseInfo info = Greenfoot.getMouseInfo();
-        long currentTime = System.currentTimeMillis();
-
-        // 拖动预览
-        if (!isLocked && isDragging && info != null) {
-            setLocation(info.getX() - offsetX, info.getY() - offsetY);
-            showRangePreview();
-            showWeaponSlots();
+    public void act() {
+        if (!isLocked) {
+            handleDragAndDrop();
         } else {
-            removeRangePreview();
-            hideWeaponSlots();
+            if (target == null || !isInRange(target)) {
+                List<Enemy> enemies = getWorld().getObjects(Enemy.class);
+                target = findTarget(enemies);
+            }
+            if (target != null && canAttack()) {
+                attack(target);
+                lastAttackTime = System.currentTimeMillis();
+            }
+        }
+    }
+
+    protected boolean canAttack() {
+        long elapsed = System.currentTimeMillis() - lastAttackTime;
+        long effectiveCooldown = (long)(attackCooldownMillis * fireRateMultiplier);
+        return elapsed >= effectiveCooldown && !projectileInFlight;
+    }
+
+    protected Enemy findTarget(List<Enemy> enemies) {
+        for (Enemy enemy : enemies) {
+            if (isInRange(enemy)) return enemy;
+        }
+        return null;
+    }
+
+    protected boolean isInRange(Enemy enemy) {
+        if (enemy == null || enemy.getWorld() == null) return false;
+        double dx = enemy.getX() - getX();
+        double dy = enemy.getY() - getY();
+        return dx*dx + dy*dy <= range * range;
+    }
+
+    protected void handleDragAndDrop() {
+        MouseInfo info = Greenfoot.getMouseInfo();
+        if (info != null && containsPoint(info.getX(), info.getY())) {
+            showPriceTag();
+        } else {
+            hidePriceTag();
         }
 
-        // 鼠标交互
-        if (!isLocked && info != null) {
+        if (isDragging && info != null) {
+            StarManager starManager = getWorld().getObjects(StarManager.class).get(0);
+            if (starManager.getStars() >= cost) {
+                setLocation(info.getX() - offsetX, info.getY() - offsetY);
+                showRangePreview();
+                showWeaponSlots();
+            } else {
+                setLocation(spawnX, spawnY);
+                isDragging = false;
+                removeRangePreview();
+                hideWeaponSlots();
+                hidePriceTag();
+            }
+        }
+
+        if (info != null) {
             if (Greenfoot.mousePressed(this)) {
                 mouseClicked();
-            } else if (Greenfoot.mouseDragEnded(this)) {
+            } else if (isDragging && Greenfoot.mouseDragEnded(this)) {
                 mouseReleased();
             }
         }
+    }
 
-        // 固定放置后自动攻击
-        if (!isDragging && isLocked) {
-            if (target == null || !isInRange(target)) {
-                target = findTarget(enemies);
-            }
+    private boolean containsPoint(int x, int y) {
+        GreenfootImage img = getImage();
+        int left = getX() - img.getWidth()/2;
+        int top = getY() - img.getHeight()/2;
+        return x >= left && x <= left + img.getWidth() && y >= top && y <= top + img.getHeight();
+    }
 
-            if (target != null && currentTime - lastAttackTime >= 1000 / attackSpeed) {
-                attack(target);
-                lastAttackTime = currentTime;
+    public void mouseClicked() {
+        if (!isLocked) {
+            MouseInfo info = Greenfoot.getMouseInfo();
+            if (info != null) {
+                isDragging = true;
+                offsetX = info.getX() - getX();
+                offsetY = info.getY() - getY();
+                showWeaponSlots();
             }
         }
     }
 
-    // 判断敌人是否在范围内
-    protected boolean isInRange(Enemy enemy) {
-        double dx = enemy.getX() - getX();
-        double dy = enemy.getY() - getY();
-        return (dx * dx + dy * dy) <= (range * range);
+    public void mouseReleased() {
+        if (isLocked) return;
+        returnToSpawnIfNotPlacedProperly();
+        isDragging = false;
+        removeRangePreview();
+        hideWeaponSlots();
+        hidePriceTag();
     }
 
-    // 寻找第一个范围内的目标
-    protected Enemy findTarget(List<Enemy> enemies) {
-        for (Enemy enemy : enemies) {
-            if (isInRange(enemy)) {
-                return enemy;
+    private void returnToSpawnIfNotPlacedProperly() {
+        List<WeaponSlot> slots = getWorld().getObjects(WeaponSlot.class);
+        StarManager starManager = getWorld().getObjects(StarManager.class).get(0);
+        WeaponSlot targetSlot = null;
+
+        for (WeaponSlot slot : slots) {
+            if (slot.getBoundingRectangle().contains(getX(), getY()) && !slot.isOccupied()) {
+                targetSlot = slot;
+                break;
             }
         }
-        return null;
+
+        if (targetSlot != null && starManager.getStars() >= cost) {
+            if (starManager.spendStars(cost)) {
+                setLocation(targetSlot.getX(), targetSlot.getY());
+                isLocked = true;
+                targetSlot.setOccupied(true);
+                spawnNewCopy();
+            } else {
+                setLocation(spawnX, spawnY);
+            }
+        } else {
+            setLocation(spawnX, spawnY);
+        }
+    }
+
+    private void spawnNewCopy() {
+        Weapons copy = createCopy(spawnX, spawnY);
+        getWorld().addObject(copy, spawnX, spawnY);
     }
 
     private void showRangePreview() {
@@ -115,91 +181,60 @@ public abstract class Weapons extends Actor
         }
     }
 
-    public void mouseClicked() {
-        if (!isLocked) {
-            MouseInfo info = Greenfoot.getMouseInfo();
-            if (info != null) {
-                isDragging = true;
-                offsetX = info.getX() - getX();
-                offsetY = info.getY() - getY();
-            }
-        }
-    }
-
-    public void mouseReleased () {
-        if (!isLocked) {
-            List<WeaponSlot> slots = getWorld().getObjects(WeaponSlot.class);
-
-            boolean validPlacement = false;
-            WeaponSlot targetSlot = null;
-
-            // 找到鼠标释放时所在的武器槽（如果有）
-            for (WeaponSlot slot : slots) {
-                if (slot.getBoundingRectangle().contains(getX(), getY())) {
-                    if (!slot.isOccupied()) { // 只有空闲槽可放置
-                        validPlacement = true;
-                        targetSlot = slot;
-                        break;
-                    }
-                }
-            }
-
-            if (validPlacement && targetSlot != null) {
-                // 把武器“吸附”到底座中心
-                setLocation(targetSlot.getX(), targetSlot.getY());
-
-                // 标记武器固定，且标记底座已被占用
-                isDragging = false;
-                isLocked = true;
-                offsetX = 0;
-                offsetY = 0;
-
-                targetSlot.setOccupied(true); // 让底座变不透明
-
-                // 生成一个新的备货武器回商店位置（假设100,100为商店）
-                spawnNewCopy();
-            } else {
-                // 放置无效，返回商店原位
-                setLocation(100, 100);
-                isDragging = false;
-            }
-        }
-    }
-
-    public void unlock() {
-        isLocked = false;
-    }
-
-    public void startDragging() {
-        isDragging = true;
-        MouseInfo info = Greenfoot.getMouseInfo();
-        if (info != null) {
-            offsetX = info.getX() - getX();
-            offsetY = info.getY() - getY();
-        }
-    }
-
-    private void spawnNewCopy() {
-        Weapons copy = createCopy();
-        getWorld().addObject(copy, 100, 100);
-    }
-
     private void showWeaponSlots() {
-        List<WeaponSlot> slots = getWorld().getObjects(WeaponSlot.class);
-        for (WeaponSlot slot : slots) {
-            if (!slot.isOccupied()) {
-                slot.showTransparent();
-            }
+        for (WeaponSlot slot : getWorld().getObjects(WeaponSlot.class)) {
+            if (!slot.isOccupied()) slot.showTransparent();
         }
     }
 
     private void hideWeaponSlots() {
-        List<WeaponSlot> slots = getWorld().getObjects(WeaponSlot.class);
-        for (WeaponSlot slot : slots) {
-            if (!slot.isOccupied()) {
-                slot.hide();
-            }
+        for (WeaponSlot slot : getWorld().getObjects(WeaponSlot.class)) {
+            if (!slot.isOccupied()) slot.hide();
         }
     }
-}
 
+    private void showPriceTag() {
+        if (priceTag != null) return;
+        World world = getWorld();
+        StarManager starManager = world.getObjects(StarManager.class).get(0);
+        boolean enough = starManager.getStars() >= cost;
+        String baseName = getPriceImageName();
+        String imgName = enough ? baseName + "Prices.png" : baseName + "Pricesnot_enough.png";
+        priceTag = new PictureActor(imgName);
+        world.addObject(priceTag, getX(), getY() - getImage().getHeight()/2 + 110);
+        priceShown = true;
+    }
+
+    private void hidePriceTag() {
+        if (priceTag != null) {
+            getWorld().removeObject(priceTag);
+            priceTag = null;
+            priceShown = false;
+        }
+    }
+
+    public void setAttackBoost(int boost) {
+        this.damageBoost = boost;
+    }
+
+    public void setFireRateMultiplier(double multiplier) {
+        this.fireRateMultiplier = multiplier;
+    }
+
+    public int getTotalDamage() {
+        return baseDamage + damageBoost;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    // 子类必须实现的
+    public abstract void attack(Enemy enemy);
+    public abstract Weapons createCopy(int spawnX, int spawnY);
+    protected abstract String getPriceImageName();
+}

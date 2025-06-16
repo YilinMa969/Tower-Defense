@@ -2,13 +2,17 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.awt.Rectangle;
 /**
  * Write a description of class WeaponSlot here.
+ * When dragging a weapon, the free base will show a semi-transparent hint. 
+ * When a weapon is successfully placed, the corresponding base becomes opaque and is marked as occupied.
+ * When weapon placement fails, the base remains hidden.
  * 
- * @author Briannie Law
- * @version 6/11/2025
+ * @author Briannie Law & Yilin Ma
+ * @version 6/12/2025
  */
 public class WeaponSlot extends Actor {
     private GreenfootImage baseImage;
     private boolean occupied = false;
+    
     
     public boolean isOccupied() {
         return occupied;
@@ -54,4 +58,6 @@ public class WeaponSlot extends Actor {
             hide();
         }
     }
+    
+    
 }
