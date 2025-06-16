@@ -105,10 +105,20 @@ public class Enemy extends Actor {
             moveTo(target);
         }
 
-        if (isTouching(SelectableCookie.class)) {
+        if (reachedEnd()) {
+            MainGameWorld world = (MainGameWorld) getWorld();
+            CookieHPManager hp = world.getCookieHPManager();
+        
+            if (this instanceof SmallCakeMonster) {
+                hp.takeDamage(1);
+            } else if (this instanceof EliteCakeMonster) {
+                hp.takeDamage(2);
+            } else if (this instanceof BossMonster) {
+                hp.takeDamage(3);
+            }
+        
             removed = true;
             getWorld().removeObject(this);
-            // 可添加扣血等逻辑
         }
     }
 
@@ -142,6 +152,11 @@ public class Enemy extends Actor {
             removed = true;
             getWorld().removeObject(this);
         }
+    }
+
+    private boolean reachedEnd() {
+        Point end = MainGameWorld.enemyPath.get(MainGameWorld.enemyPath.size() - 1);
+        return Math.abs(getX() - end.x) < 10 && Math.abs(getY() - end.y) < 10;
     }
 
 }

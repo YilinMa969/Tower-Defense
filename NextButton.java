@@ -17,6 +17,15 @@ class NextButton extends Actor {
             CharacterSelectWorld selectWorld = (CharacterSelectWorld) getWorld();
             String cookieType = selectWorld.getSelectedCookieName();     // 例如 "cocoa"
             String smallPrefix = selectWorld.getSelectedSmallPrefix();   // 例如 "cocoa_small_"
+            
+            if (cookieType.contains("hazelnut")) {
+                PassiveSkillManager.getInstance().selectCookie("Hazelnut");
+            } else if (cookieType.contains("blueberry")) {
+                PassiveSkillManager.getInstance().selectCookie("Blueberry");
+            } else if (cookieType.contains("cocoa")) {
+                PassiveSkillManager.getInstance().selectCookie("Cocoa");
+            }
+            
             MainGameWorld world = new MainGameWorld(cookieType, smallPrefix);
             Greenfoot.setWorld(world);
         }

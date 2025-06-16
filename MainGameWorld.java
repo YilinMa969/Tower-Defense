@@ -36,8 +36,8 @@ public class MainGameWorld extends World {
         loadPath();
         setupEnemiesForRound();
         
-        SelectableCookie player = new SelectableCookie(false, smallPrefix);
-        addObject(player, 1145, 530);
+        SelectableCookie player = createCookieByType(smallPrefix);
+        addObject(player, 1145, 530);   
         
         // 添加隐藏的底座
         for (int[] pos : weaponSlotPositions) {
@@ -52,8 +52,7 @@ public class MainGameWorld extends World {
         addObject(starManager, 313, 54);
         
         // 设置饼干效果
-        int initialHP = 10;
-        if (cookieType.equals("hazelnut")) initialHP = 15;
+        int initialHP = player.getInitialHP();  // player is your SelectableCookie
         cookieHPManager = new CookieHPManager(initialHP);
         addObject(cookieHPManager, 98, 54);
         
@@ -184,5 +183,17 @@ public class MainGameWorld extends World {
     
     public CookieHPManager getCookieHPManager() {
         return cookieHPManager;
+    }
+    
+    public SelectableCookie createCookieByType(String prefix) {
+        if (prefix.startsWith("hazelnut")) {
+            return new HazelnutCookie(prefix);
+        } else if (prefix.startsWith("blueberry")) {
+            return new BlueberryCookie(prefix);
+        } else if (prefix.startsWith("cocoa")) {
+            return new CocoaCookie(prefix);
+        } else {
+            throw new IllegalArgumentException("Unknown cookie type: " + prefix);
+        }
     }
 }

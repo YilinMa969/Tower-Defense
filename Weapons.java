@@ -37,6 +37,14 @@ public abstract class Weapons extends Actor {
         this.baseDamage = baseDamage;
         this.attackCooldownMillis = baseCooldownMillis;
         this.cost = cost;
+        
+        if (PassiveSkillManager.getInstance().isBlueberryCookieActive()) {
+            fireRateMultiplier = 0.7; // 30% faster
+        } else {
+            fireRateMultiplier = 1.0;
+        }
+    
+        long effectiveCooldown = (long)(attackCooldownMillis * fireRateMultiplier);
     }
 
     public void act() {

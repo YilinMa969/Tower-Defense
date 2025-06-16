@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=PassiveSkillManager
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ PassiveSkillManager\ here.\r\n\ \r\n\ @author\ Briannie\ Law\r\n\ @version\ 6/16/2025\r\n
+comment1.params=
+comment1.target=PassiveSkillManager()
+comment2.params=
+comment2.target=PassiveSkillManager\ getInstance()
+comment3.params=cookieType
+comment3.target=void\ selectCookie(java.lang.String)
+comment4.params=
+comment4.target=boolean\ isBlueberryCookieActive()
+comment5.params=
+comment5.target=boolean\ isCocoaCookieActive()
+comment6.params=
+comment6.target=void\ clearSelection()
+numComments=7

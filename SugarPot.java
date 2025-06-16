@@ -1,16 +1,16 @@
 import greenfoot.*;
 
 /**
- * A weapon that throws sugar pots at enemies.
+ * A weapon that throws sugar at enemies.
  * Deals low damage, moderate range, fast attack speed.
  * 
- * @author Bri
+ * @author Briannie Law
  * @version 6/9/2025
  */
 public class SugarPot extends Weapons {
 
     public SugarPot(int spawnX, int spawnY) {
-        super(spawnX, spawnY, 130, 1, 180, 5); // range=130, baseDamage=1, cooldown=180ms, cost=5
+        super(spawnX, spawnY, 130, 1, 500, 5); // range=130, baseDamage=1, cooldown=500ms, cost=5
         setImage("SugarPot.png");
     }
 
@@ -23,10 +23,12 @@ public class SugarPot extends Weapons {
     public void attack(Enemy enemy) {
         if (projectileInFlight) return;
 
+        int damage = PassiveSkillManager.getInstance().isCocoaCookieActive() ? 3 : baseDamage;
+        
         int angle = (int) Math.toDegrees(Math.atan2(enemy.getY() - getY(), enemy.getX() - getX()));
         setRotation(angle + 90);
-
-        getWorld().addObject(new Projectile(enemy, baseDamage, this), getX(), getY());
+    
+        getWorld().addObject(new Projectile(enemy, damage, this), getX(), getY());
         projectileInFlight = true;
     }
 

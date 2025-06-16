@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=CaramelLaser
-comment0.text=\n\ Write\ a\ description\ of\ class\ CaramelLaser\ here.\n\ \n\ @author\ Yilin\ Ma\ \n\ @version\ 2025.6.14\n
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ CaramelLaser\ here.\r\n\ \r\n\ @author\ Yilin\ Ma\ \r\n\ @version\ 2025.6.14\r\n
 comment1.params=x\ y
 comment1.target=CaramelLaser(int,\ int)
 comment2.params=

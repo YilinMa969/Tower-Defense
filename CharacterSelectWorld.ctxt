@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=CharacterSelectWorld
-comment0.text=\n\ Character\ selection\ screen\ for\ choosing\ a\ Cookie.\n\ Shows\ large\ animated\ cookie\ and\ allows\ switching.\n\n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.04)\n
+comment0.text=\r\n\ Character\ selection\ screen\ for\ choosing\ a\ Cookie.\r\n\ Shows\ large\ animated\ cookie\ and\ allows\ switching.\r\n\r\n\ @author\ (Yilin\ Ma)\r\n\ @version\ (2025.06.04)\r\n
 comment1.params=
 comment1.target=CharacterSelectWorld()
 comment2.params=direction
@@ -9,4 +9,10 @@ comment3.params=
 comment3.target=java.lang.String\ getSelectedSmallPrefix()
 comment4.params=
 comment4.target=java.lang.String\ getSelectedCookieName()
-numComments=5
+comment5.params=
+comment5.target=int\ getInitialHP()
+comment6.params=index
+comment6.target=void\ spawnCookie(int)
+comment7.params=prefix\ isBig
+comment7.target=SelectableCookie\ createCookieByPrefix(java.lang.String,\ boolean)
+numComments=8

@@ -4,7 +4,7 @@ import greenfoot.*;
  * A projectile that targets an enemy and deals damage on hit.
  * One projectile per weapon at a time (controlled via projectileInFlight).
  * 
- * @author Bri
+ * @author Briannie Law
  * @version 6/13/2025
  */
 public class Projectile extends Actor {
@@ -13,10 +13,10 @@ public class Projectile extends Actor {
     private Enemy target;
     private Weapons owner; // 保存发射该子弹的武器实例
 
-    public Projectile(Enemy target, int baseDamage, Weapons owner) {
+    public Projectile(Enemy target, int damage, Weapons owner) {
         this.target = target;
         this.owner = owner;
-        this.damage = baseDamage + owner.damageBoost; // 伤害加上Cookie加成
+        this.damage = damage;
         setImage("SugarPotBullets.png");
     }
 

@@ -7,7 +7,7 @@ import greenfoot.*;
  * @author (Yilin Ma)
  * @version (2025.06.04)
  */
-public class SelectableCookie extends Actor {
+public abstract class SelectableCookie extends Actor {
     private GreenfootImage[] animationFrames;
     private int frameIndex = 0;
     private int animationCounter = 0;
@@ -15,6 +15,7 @@ public class SelectableCookie extends Actor {
 
     private String animationPrefix;
     private boolean isBig;
+    protected CookieHPManager hpManager;
 
     public SelectableCookie(boolean isBig, String animationPrefix) {
         this.isBig = isBig;
@@ -51,6 +52,20 @@ public class SelectableCookie extends Actor {
         for (int i = 0; i < count; i++) {
             GreenfootImage img = new GreenfootImage(animationPrefix + i + ".png");
             animationFrames[i] = img;
+        }
+    }
+    
+    public void setHPManager(CookieHPManager manager) {
+        this.hpManager = manager;
+    }
+    
+    public int getInitialHP() {
+        return 10; // default for all cookies unless overridden
+    }
+    
+    public void takeDamage(int amount) {
+        if (hpManager != null) {
+            hpManager.takeDamage(amount);
         }
     }
 }

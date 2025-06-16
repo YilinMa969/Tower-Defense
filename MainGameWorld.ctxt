@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=MainGameWorld
-comment0.text=\n\ The\ main\ game\ world\ where\ the\ selected\ cookie\ appears\ in\ small\ size.\n\ \n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.12)\n
+comment0.text=\r\n\ The\ main\ game\ world\ where\ the\ selected\ cookie\ appears\ in\ small\ size.\r\n\ \r\n\ @author\ (Yilin\ Ma)\r\n\ @version\ (2025.06.12)\r\n
 comment1.params=smallPrefix\ cookieType
 comment1.target=MainGameWorld(java.lang.String,\ java.lang.String)
 comment10.params=
@@ -9,6 +9,8 @@ comment11.params=
 comment11.target=double\ getFireRateMultiplier()
 comment12.params=
 comment12.target=CookieHPManager\ getCookieHPManager()
+comment13.params=prefix
+comment13.target=SelectableCookie\ createCookieByType(java.lang.String)
 comment2.params=
 comment2.target=void\ loadPath()
 comment3.params=
@@ -25,4 +27,4 @@ comment8.params=visible
 comment8.target=void\ setWeaponSlotVisibility(boolean)
 comment9.params=
 comment9.target=java.util.List\ getWeaponSlots()
-numComments=13
+numComments=14
