@@ -15,26 +15,28 @@ import java.awt.Rectangle;
  * @author Briannie Law
  * @version 6/6/2025
  */
+
 public abstract class Weapons extends Actor
 {
-    protected int range;               // Attack range
-    protected int damage;              // Damage per attack
-    protected long attackSpeed;        // Attacks per second
-    protected int cost;                // Cost to build
-    protected long cooldown;           // Cooldown timer
+    protected int range;               // 攻击范围
+    protected int damage;              // 伤害
+    protected int attackSpeed;        // 攻击速度（每秒攻击次数）
+    protected int cost;                // 造价
+    protected long cooldown;           // 冷却时间（毫秒）
 
-    protected Enemy target; // Current enemy target
-    
+    protected Enemy target;            // 当前攻击目标
+
     private boolean isDragging = false;
-    private int offsetX, offsetY; // Store the mouse click offset
+    private int offsetX, offsetY;      // 鼠标点击偏移，用于拖动
     private long lastAttackTime = 0;
     private RangeCircle rangeCircle = null;
-    private boolean isLocked = false; // To track if the tower is locked in place
+    private boolean isLocked = false;  // 是否已固定放置
+    private int cooldownCounter = 0;
 
     public abstract void attack(Enemy enemy);
     public abstract Weapons createCopy();
-    
-    public Weapons(int x, int y, int range, int damage, long attackSpeed, int cost) {
+
+    public Weapons(int x, int y, int range, int damage, int attackSpeed, int cost) {
         this.range = range;
         this.damage = damage;
         this.attackSpeed = attackSpeed;
@@ -49,15 +51,17 @@ public abstract class Weapons extends Actor
         MouseInfo info = Greenfoot.getMouseInfo();
         long currentTime = System.currentTimeMillis();
 
-        // Drag and preview
+        // 拖动预览
         if (!isLocked && isDragging && info != null) {
             setLocation(info.getX() - offsetX, info.getY() - offsetY);
             showRangePreview();
+            showWeaponSlots();
         } else {
             removeRangePreview();
+            hideWeaponSlots();
         }
 
-        // Handle mouse interactions
+        // 鼠标交互
         if (!isLocked && info != null) {
             if (Greenfoot.mousePressed(this)) {
                 mouseClicked();
@@ -66,7 +70,7 @@ public abstract class Weapons extends Actor
             }
         }
 
-        // Only attack when placed and not dragging
+        // 固定放置后自动攻击
         if (!isDragging && isLocked) {
             if (target == null || !isInRange(target)) {
                 target = findTarget(enemies);
@@ -77,16 +81,27 @@ public abstract class Weapons extends Actor
                 lastAttackTime = currentTime;
             }
         }
+        
+        if (cooldownCounter > 0) {
+            cooldownCounter--;
+            return;
+        }
+
+        Enemy target = getTarget(enemies);
+        if (target != null) {
+            attack(target);
+            cooldownCounter = attackSpeed; // Reset cooldown
+        }
     }
 
-    // Determines if the enemy is within range
+    // 判断敌人是否在范围内
     protected boolean isInRange(Enemy enemy) {
         double dx = enemy.getX() - getX();
         double dy = enemy.getY() - getY();
         return (dx * dx + dy * dy) <= (range * range);
     }
 
-    // Finds a new target
+    // 寻找第一个范围内的目标
     protected Enemy findTarget(List<Enemy> enemies) {
         for (Enemy enemy : enemies) {
             if (isInRange(enemy)) {
@@ -130,27 +145,34 @@ public abstract class Weapons extends Actor
             boolean validPlacement = false;
             WeaponSlot targetSlot = null;
 
+            // 找到鼠标释放时所在的武器槽（如果有）
             for (WeaponSlot slot : slots) {
                 if (slot.getBoundingRectangle().contains(getX(), getY())) {
-                    validPlacement = true;
-                    targetSlot = slot;
-                    break;
+                    if (!slot.isOccupied()) { // 只有空闲槽可放置
+                        validPlacement = true;
+                        targetSlot = slot;
+                        break;
+                    }
                 }
             }
 
             if (validPlacement && targetSlot != null) {
-                // Snap to the slot
+                // 把武器“吸附”到底座中心
                 setLocation(targetSlot.getX(), targetSlot.getY());
+
+                // 标记武器固定，且标记底座已被占用
                 isDragging = false;
                 isLocked = true;
                 offsetX = 0;
                 offsetY = 0;
-                
-                // Spawn a new copy at the original shop location
+
+                targetSlot.setOccupied(true); // 让底座变不透明
+
+                // 生成一个新的备货武器回商店位置（假设100,100为商店）
                 spawnNewCopy();
             } else {
-                // If not valid, return to origin
-                setLocation(100, 100); // fallback origin
+                // 放置无效，返回商店原位
+                setLocation(100, 100);
                 isDragging = false;
             }
         }
@@ -168,11 +190,41 @@ public abstract class Weapons extends Actor
             offsetY = info.getY() - getY();
         }
     }
-    
-    // TODO: Move tower spawning into a ShopButton class when ready
+
     private void spawnNewCopy() {
         Weapons copy = createCopy();
-        getWorld().addObject(copy, 100, 100); // Replace 100,100 with your shop spot
+        getWorld().addObject(copy, 100, 100);
+    }
+
+    private void showWeaponSlots() {
+        List<WeaponSlot> slots = getWorld().getObjects(WeaponSlot.class);
+        for (WeaponSlot slot : slots) {
+            if (!slot.isOccupied()) {
+                slot.showTransparent();
+            }
         }
+    }
+
+    private void hideWeaponSlots() {
+        List<WeaponSlot> slots = getWorld().getObjects(WeaponSlot.class);
+        for (WeaponSlot slot : slots) {
+            if (!slot.isOccupied()) {
+                slot.hide();
+            }
+        }
+    }
+    
+     protected Enemy getTarget(List<Enemy> enemies) {
+        for (Enemy e : enemies) {
+            if (e != null && getDistanceTo(e) <= range) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    protected double getDistanceTo(Actor other) {
+        return Math.hypot(getX() - other.getX(), getY() - other.getY());
+    }
 }
 
