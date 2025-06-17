@@ -1,10 +1,12 @@
 #BlueJ class context
 comment0.target=Enemy
-comment0.text=\r\n\ Enemy\ that\ follows\ a\ path\ and\ flips\ image\ when\ changing\ direction.\r\n\ Default\ image\ faces\ right;\ flips\ horizontally\ when\ moving\ left.\r\n\ \r\n\ @author\ (Yilin\ Ma)\ \r\n\ @version\ (2025.6.10)\r\n
+comment0.text=\n\ Enemy\ that\ follows\ a\ path\ and\ flips\ image\ when\ changing\ direction.\n\ Default\ image\ faces\ right;\ flips\ horizontally\ when\ moving\ left.\n\ \n\ @author\ Yilin\ Ma\n\ @version\ 2025.6.16\n
 comment1.params=normalImageFile\ slowedImageFile
 comment1.target=Enemy(java.lang.String,\ java.lang.String)
 comment10.params=
 comment10.target=boolean\ reachedEnd()
+comment11.params=
+comment11.target=int\ getHealth()
 comment2.params=slowed
 comment2.target=void\ setSlowed(boolean)
 comment3.params=
@@ -21,4 +23,4 @@ comment8.params=target
 comment8.target=void\ moveTo(java.awt.Point)
 comment9.params=damage
 comment9.target=void\ takeDamage(int)
-numComments=11
+numComments=12

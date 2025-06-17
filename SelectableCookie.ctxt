@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=SelectableCookie
-comment0.text=\r\n\ Represents\ a\ selectable\ cookie\ character\ with\ animated\ sprite\ frames.\r\n\ Supports\ big\ or\ small\ size\ versions.\r\n\ \r\n\ @author\ (Yilin\ Ma)\r\n\ @version\ (2025.06.04)\r\n
+comment0.text=\n\ Represents\ a\ selectable\ cookie\ character\ with\ animated\ sprite\ frames.\n\ Supports\ big\ or\ small\ size\ versions.\n\ \n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.04)\n
 comment1.params=isBig\ animationPrefix
 comment1.target=SelectableCookie(boolean,\ java.lang.String)
 comment2.params=

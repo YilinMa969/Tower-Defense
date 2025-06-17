@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=CookieHPManager
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ CookieHPManager\ here.\r\n\ \r\n\ @author\ Yilin\ Ma\r\n\ @version\ 2025.06.16\r\n
+comment0.text=\n\ Write\ a\ description\ of\ class\ CookieHPManager\ here.\n\ \n\ @author\ Yilin\ Ma\n\ @version\ 2025.06.16\n
 comment1.params=initialHP
 comment1.target=CookieHPManager(int)
 comment2.params=world

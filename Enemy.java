@@ -5,8 +5,8 @@ import java.awt.Point;
  * Enemy that follows a path and flips image when changing direction.
  * Default image faces right; flips horizontally when moving left.
  * 
- * @author (Yilin Ma) 
- * @version (2025.6.10)
+ * @author Yilin Ma
+ * @version 2025.6.16
  */
 public class Enemy extends Actor {
     protected GreenfootImage originalImage;
@@ -22,17 +22,15 @@ public class Enemy extends Actor {
     protected int normalSpeed = 2;
     protected int slowedSpeed = 1;
 
-    protected int slowTimer = 0;  // 减速剩余时间
+    protected int slowTimer = 0;
     protected final int SLOW_DURATION = 120;
 
-    // 新增泡泡逻辑
     private boolean bubbled = false;
     private int bubbleTimer = 0;
     private final int BUBBLE_DURATION = 120;
+
+    protected int health = 10;
     
-    protected int health = 10; //Edit this to change health of monster
-
-
     public Enemy(String normalImageFile, String slowedImageFile) {
         originalImage = new GreenfootImage(normalImageFile);
         flippedImage = new GreenfootImage(originalImage);
@@ -44,7 +42,7 @@ public class Enemy extends Actor {
 
         setImage(originalImage);
     }
-
+    
     // 减速逻辑
     public void setSlowed(boolean slowed) {
         if (slowed) {
@@ -145,7 +143,7 @@ public class Enemy extends Actor {
             setLocation(newX, newY);
         }
     }
-    
+
     public void takeDamage(int damage) {
         health -= damage;
         if (health <= 0) {
@@ -158,5 +156,8 @@ public class Enemy extends Actor {
         Point end = MainGameWorld.enemyPath.get(MainGameWorld.enemyPath.size() - 1);
         return Math.abs(getX() - end.x) < 10 && Math.abs(getY() - end.y) < 10;
     }
-
+    
+    public int getHealth() {
+        return health;
+    }
 }

@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Weapons
-comment0.text=\r\n\ Weapons\ can\ be\ placed,\ attack\ enemies,\ and\ be\ modified\ by\ cookie\ effects.\r\n\ Handles\ drag-and-drop,\ cooldowns,\ damage\ boost,\ and\ fire\ rate\ changes.\r\n\ \r\n\ @author\ Briannie\ Law\ &\ Yilin\ Ma\r\n\ @version\ 2025-06-16\r\n
+comment0.text=\n\ Weapons\ can\ be\ placed,\ attack\ enemies,\ and\ be\ modified\ by\ cookie\ effects.\n\ Handles\ drag-and-drop,\ cooldowns,\ damage\ boost,\ and\ fire\ rate\ changes.\n\ \n\ @author\ Briannie\ Law\ &\ Yilin\ Ma\n\ @version\ 2025-06-16\n
 comment1.params=spawnX\ spawnY\ range\ baseDamage\ baseCooldownMillis\ cost
 comment1.target=Weapons(int,\ int,\ int,\ int,\ long,\ int)
 comment10.params=

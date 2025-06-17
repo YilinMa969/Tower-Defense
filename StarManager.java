@@ -9,7 +9,7 @@ import java.util.*;
 
 
 public class StarManager extends Actor {
-    private int stars = 20;  // 初始20颗星
+    private int stars = 15;  // 初始15颗星
     private long lastUpdate = System.currentTimeMillis();
 
     private GreenfootImage[] digits = new GreenfootImage[10];
@@ -33,7 +33,7 @@ public class StarManager extends Actor {
     }
 
     public void act() {
-        if (System.currentTimeMillis() - lastUpdate >= 5000) {
+        if (System.currentTimeMillis() - lastUpdate >= 3000) {
             addStars(1);
             lastUpdate = System.currentTimeMillis();
         }

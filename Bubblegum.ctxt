@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Bubblegum
-comment0.text=\r\n\ Bubblegum\ weapon\:\ traps\ a\ single\ enemy\ in\ a\ bubble\ so\ it\ cannot\ move.\r\n\ Each\ attack\ only\ bubbles\ one\ enemy\ at\ a\ time.\r\n\ \r\n\ @author\ Yilin\ Ma\r\n\ @version\ 2025.6.13\r\n
+comment0.text=\n\ Bubblegum\ weapon\:\ traps\ a\ single\ enemy\ in\ a\ bubble\ so\ it\ cannot\ move.\n\ Each\ attack\ only\ bubbles\ one\ enemy\ at\ a\ time.\n\ \n\ @author\ Yilin\ Ma\n\ @version\ 2025.6.13\n
 comment1.params=x\ y
 comment1.target=Bubblegum(int,\ int)
 comment2.params=

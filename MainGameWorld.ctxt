@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=MainGameWorld
-comment0.text=\r\n\ The\ main\ game\ world\ where\ the\ selected\ cookie\ appears\ in\ small\ size.\r\n\ \r\n\ @author\ (Yilin\ Ma)\r\n\ @version\ (2025.06.12)\r\n
+comment0.text=\n\ The\ main\ game\ world\ where\ the\ selected\ cookie\ appears\ in\ small\ size.\n\ \n\ @author\ (Yilin\ Ma)\n\ @version\ (2025.06.12)\n
 comment1.params=smallPrefix\ cookieType
 comment1.target=MainGameWorld(java.lang.String,\ java.lang.String)
 comment10.params=

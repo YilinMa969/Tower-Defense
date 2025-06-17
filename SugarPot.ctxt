@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=SugarPot
-comment0.text=\r\n\ A\ weapon\ that\ throws\ sugar\ at\ enemies.\r\n\ Deals\ low\ damage,\ moderate\ range,\ fast\ attack\ speed.\r\n\ \r\n\ @author\ Briannie\ Law\r\n\ @version\ 6/9/2025\r\n
+comment0.text=\n\ A\ weapon\ that\ throws\ sugar\ pots\ at\ enemies.\n\ Deals\ low\ damage,\ moderate\ range,\ fast\ attack\ speed.\n\ \n\ @author\ Bri\n\ @version\ 6/9/2025\n
 comment1.params=spawnX\ spawnY
 comment1.target=SugarPot(int,\ int)
 comment2.params=

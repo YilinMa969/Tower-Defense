@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=LaserBullet
+comment1.params=target\ damage\ owner
+comment1.target=LaserBullet(Enemy,\ int,\ CaramelLaser)
+comment2.params=
+comment2.target=void\ act()
+numComments=3

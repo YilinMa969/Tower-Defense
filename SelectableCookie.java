@@ -7,7 +7,7 @@ import greenfoot.*;
  * @author (Yilin Ma)
  * @version (2025.06.04)
  */
-public abstract class SelectableCookie extends Actor {
+public class SelectableCookie extends Actor {
     private GreenfootImage[] animationFrames;
     private int frameIndex = 0;
     private int animationCounter = 0;

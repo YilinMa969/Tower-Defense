@@ -50,4 +50,3 @@ public class PassiveSkillManager {
         isCocoa = false;
     }
 }
-

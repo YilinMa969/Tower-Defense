@@ -15,7 +15,7 @@ public class Bubblegum extends Weapons {
     private final int FRAME_DELAY = 10;
 
     public Bubblegum(int x, int y) {
-        super(x, y, 150, 0, 1, 5);  // range, damage=0, attackSpeed=1 hit/sec, cost
+        super(x, y, 150, 0, 3000, 5);  // range, damage, attackSpeed，cost
         attackFrames = new GreenfootImage[] {
             new GreenfootImage("Bubblegum1.png"),
             new GreenfootImage("Bubblegum2.png")

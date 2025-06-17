@@ -13,17 +13,18 @@ public class CharacterSelectWorld extends World {
     private SelectableCookie cookieActor;
     private PictureActor nameActor;
     private PictureActor storyActor;
+    private PictureActor skillActor;
     private ArrayList<CookieData> cookies;
     private int currentIndex = 0;
-
+    
     public CharacterSelectWorld() {
         super(1280, 800, 1);
         setBackground(new GreenfootImage("character_select_bg.png"));
 
         cookies = new ArrayList<>();
-        cookies.add(new CookieData("hazelnut_big_", "hazelnut_name.png", "hazelnut_story.png", true));
-        cookies.add(new CookieData("blueberry_big_", "blueberry_name.png", "blueberry_story.png", true));
-        cookies.add(new CookieData("cocoa_big_", "cocoa_name.png", "cocoa_story.png", true));
+        cookies.add(new CookieData("hazelnut_big_", "hazelnut_name.png", "hazelnut_story.png", "hazelnut_skill.png", true));
+        cookies.add(new CookieData("blueberry_big_", "blueberry_name.png", "blueberry_story.png", "blueberry_skill.png",true));
+        cookies.add(new CookieData("cocoa_big_", "cocoa_name.png", "cocoa_story.png",  "cocoa_skill.png",true));
 
         cookieActor = createCookieByPrefix(cookies.get(currentIndex).animationPrefix, true);
         addObject(cookieActor, 1000, 360);
@@ -33,6 +34,9 @@ public class CharacterSelectWorld extends World {
 
         storyActor = new PictureActor(cookies.get(currentIndex).storyImage);
         addObject(storyActor, 410, 205);
+        
+        skillActor = new PictureActor(cookies.get(currentIndex).skillImage);
+        addObject(skillActor, 380, 730);
 
         addObject(new ArrowButton(-1), 820, 570);    // 左箭头
         addObject(new ArrowButton(1), 1170, 570);    // 右箭头
@@ -60,10 +64,11 @@ public class CharacterSelectWorld extends World {
         // Update name and story images
         nameActor.setPicture(data.nameImage);
         storyActor.setPicture(data.storyImage);
+        skillActor.setPicture(data.skillImage);
     }
     
     public String getSelectedSmallPrefix() {
-        return cookies.get(currentIndex).animationPrefix.replace("_big_", "_small_");
+         return cookies.get(currentIndex).animationPrefix.replace("_big_", "_small_");
     }
     
     public String getSelectedCookieName() {
@@ -109,6 +114,7 @@ public class CharacterSelectWorld extends World {
             return new HazelnutCookie("hazelnut_" + size + "_");
         }
     }
+    
 }
 
 

@@ -1,21 +1,52 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
+import java.util.List;
 
-/**
- * Write a description of class CaramelLaser here.
- * 
- * @author Yilin Ma 
- * @version 2025.6.14
- */
 public class CaramelLaser extends Weapons {
+    private Enemy target;
+    private int attackSpeed = 10;  // 攻击间隔帧数
+    private int fireCooldown = 0;
+
     public CaramelLaser(int x, int y) {
-        super(x, y, 100, 5, 100, 15); // range, baseDamage, attackSpeed, cost
+        super(x, y, 150, 3, 10, 15); // range, damage, attackSpeed, cost
         setImage("CaramelLaser.png");
-        
     }
 
     @Override
     public void act() {
         super.act();
+
+        if (target == null || !isInRange(target) || target.getHealth() <= 0) {
+            target = findTarget();
+        }
+
+        if (target != null) {
+            int angle = (int)Math.toDegrees(Math.atan2(target.getY() - getY(), target.getX() - getX()));
+            setRotation(angle + 90);
+
+            if (fireCooldown <= 0) {
+                fireCooldown = attackSpeed;
+                LaserBullet bullet = new LaserBullet(target, baseDamage, this);
+                getWorld().addObject(bullet, getX(), getY());
+            } else {
+                fireCooldown--;
+            }
+        }
+    }
+
+    private Enemy findTarget() {
+        List<Enemy> enemies = getWorld().getObjects(Enemy.class);
+        Enemy closest = null;
+        double closestDist = Double.MAX_VALUE;
+        for (Enemy e : enemies) {
+            if (e.getHealth() > 0) {
+                double dist = Math.hypot(e.getX() - getX(), e.getY() - getY());
+                if (dist <= range && dist < closestDist) {
+                    closest = e;
+                    closestDist = dist;
+                }
+            }
+        }
+        return closest;
     }
 
     @Override
@@ -42,3 +73,4 @@ public class CaramelLaser extends Weapons {
         return "CaramelLaser";
     }
 }
+

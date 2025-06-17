@@ -13,7 +13,7 @@ public class MainGameWorld extends World {
     private int round = 1;
     private List<String> enemiesThisRound;
     private int enemiesSpawned = 0;
-    private int spawnDelay = 100;
+    private int spawnDelay = 180;  // 默认出怪间隔
     private int spawnCounter = 0;
     private StarManager starManager;
     private CookieHPManager cookieHPManager;
@@ -29,6 +29,7 @@ public class MainGameWorld extends World {
     };
     
     private List<WeaponSlot> weaponSlots = new ArrayList<>();
+    private int[] spawnDelays = {180, 150, 120, 100, 80, 60, 40};
     
     public MainGameWorld(String smallPrefix, String cookieType) {
         super(1280, 800, 1);
@@ -36,8 +37,8 @@ public class MainGameWorld extends World {
         loadPath();
         setupEnemiesForRound();
         
-        SelectableCookie player = createCookieByType(smallPrefix);
-        addObject(player, 1145, 530);   
+        SelectableCookie player = new SelectableCookie(false, smallPrefix);
+        addObject(player, 1145, 530);
         
         // 添加隐藏的底座
         for (int[] pos : weaponSlotPositions) {
@@ -52,7 +53,7 @@ public class MainGameWorld extends World {
         addObject(starManager, 313, 54);
         
         // 设置饼干效果
-        int initialHP = player.getInitialHP();  // player is your SelectableCookie
+        int initialHP = player.getInitialHP();
         cookieHPManager = new CookieHPManager(initialHP);
         addObject(cookieHPManager, 98, 54);
         
@@ -105,14 +106,18 @@ public class MainGameWorld extends World {
 
     private void spawnEnemy(String type) {
         Enemy enemy;
-        if (type.equals("small")) {
-            enemy = new SmallCakeMonster();
-        } else if (type.equals("elite")) {
-            enemy = new EliteCakeMonster();
-        } else if (type.equals("boss")) {
-            enemy = new BossMonster();
-        } else {
-            return;
+        switch(type) {
+            case "small":
+                enemy = new SmallCakeMonster();
+                break;
+            case "elite":
+                enemy = new EliteCakeMonster();
+                break;
+            case "boss":
+                enemy = new BossMonster();
+                break;
+            default:
+                return;
         }
         Point start = enemyPath.get(0);
         addObject(enemy, start.x, start.y);
@@ -121,22 +126,49 @@ public class MainGameWorld extends World {
     private void setupEnemiesForRound() {
         enemiesThisRound = new ArrayList<>();
         switch (round) {
-            case 1: for (int i = 0; i < 10; i++) enemiesThisRound.add("small"); break;
-            case 2: for (int i = 0; i < 7; i++) enemiesThisRound.add("small");
-                    for (int i = 0; i < 3; i++) enemiesThisRound.add("elite"); break;
-            case 3: for (int i = 0; i < 4; i++) enemiesThisRound.add("small");
-                    for (int i = 0; i < 5; i++) enemiesThisRound.add("elite");
-                    enemiesThisRound.add("boss"); break;
-            case 4: for (int i = 0; i < 6; i++) enemiesThisRound.add("elite"); break;
-            case 5: for (int i = 0; i < 3; i++) enemiesThisRound.add("boss"); break;
+            case 1:
+                for (int i = 0; i < 10; i++) enemiesThisRound.add("small");
+                break;
+            case 2:
+                for (int i = 0; i < 10; i++) enemiesThisRound.add("small");
+                break;
+            case 3:
+                for (int i = 0; i < 6; i++) enemiesThisRound.add("small");
+                for (int i = 0; i < 4; i++) enemiesThisRound.add("elite");
+                break;
+            case 4:
+                for (int i = 0; i < 10; i++) enemiesThisRound.add("elite");
+                break;
+            case 5:
+                for (int i = 0; i < 6; i++) enemiesThisRound.add("elite");
+                for (int i = 0; i < 3; i++) enemiesThisRound.add("boss");
+                break;
+            case 6:
+                for (int i = 0; i < 8; i++) enemiesThisRound.add("elite");
+                for (int i = 0; i < 4; i++) enemiesThisRound.add("boss");
+                break;
+            case 7:
+                for (int i = 0; i < 5; i++) enemiesThisRound.add("boss");
+                break;
+            default:
+                System.out.println("All rounds completed! You win!");
+                enemiesThisRound.clear();
+                break;
         }
         Collections.shuffle(enemiesThisRound);
         enemiesSpawned = 0;
-        spawnDelay = Math.max(10, spawnDelay - 5);
+
+        // 设置本轮出怪间隔，默认40，如果越界
+        int index = round - 1;
+        if (index >= 0 && index < spawnDelays.length) {
+            spawnDelay = spawnDelays[index];
+        } else {
+            spawnDelay = 40;
+        }
     }
 
     private void nextRound() {
-        if (round < 5) {
+        if (round < 7) {
             round++;
             setupEnemiesForRound();
         } else {

@@ -30,6 +30,4 @@ class NextButton extends Actor {
             Greenfoot.setWorld(world);
         }
     }
-
-    
 }

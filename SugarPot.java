@@ -1,16 +1,16 @@
 import greenfoot.*;
 
 /**
- * A weapon that throws sugar at enemies.
+ * A weapon that throws sugar pots at enemies.
  * Deals low damage, moderate range, fast attack speed.
  * 
- * @author Briannie Law
+ * @author Bri
  * @version 6/9/2025
  */
 public class SugarPot extends Weapons {
 
     public SugarPot(int spawnX, int spawnY) {
-        super(spawnX, spawnY, 130, 1, 500, 5); // range=130, baseDamage=1, cooldown=500ms, cost=5
+        super(spawnX, spawnY, 130, 1, 180, 5); // range=130, baseDamage=1, cooldown=180ms, cost=5
         setImage("SugarPot.png");
     }
 
