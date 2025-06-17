@@ -14,6 +14,9 @@ public class CandyFloss extends Weapons {
     private int frameIndex = 0;
     private int frameTimer = 0;
     private final int FRAME_DELAY = 10;
+    
+    private int soundCooldown = 0;
+    private final int SOUND_COOLDOWN_TIME = 160; 
 
     public CandyFloss(int x, int y) {
         super(x, y, 150, 0, 100, 10);  // range, damage, attackSpeed, cost
@@ -27,11 +30,21 @@ public class CandyFloss extends Weapons {
     @Override
     public void act() {
         super.act();
-
+        
+        if (soundCooldown > 0) {
+            soundCooldown--;
+        }
+        
         // 减速范围内敌人，刷新减速计时
         for (Enemy enemy : getWorld().getObjects(Enemy.class)) {
             if (isInRange(enemy)) {
-                enemy.setSlowed(true);  // 自动续命减速60帧
+                if (!enemy.isSlowed()) {
+                    enemy.setSlowed(true);
+                    if (soundCooldown == 0) {
+                        Greenfoot.playSound("candyfloss_attack.wav");
+                        soundCooldown = SOUND_COOLDOWN_TIME;
+                    }
+                }
             }
         }
 

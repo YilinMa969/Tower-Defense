@@ -30,6 +30,8 @@ public class SugarPot extends Weapons {
     
         getWorld().addObject(new Projectile(enemy, damage, this), getX(), getY());
         projectileInFlight = true;
+        
+        Greenfoot.playSound("sugar-shoot.wav");
     }
 
     @Override

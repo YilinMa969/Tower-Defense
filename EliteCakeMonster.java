@@ -12,4 +12,11 @@ public class EliteCakeMonster extends Enemy
         super("EliteCakeMonsters.png","EliteCakeMonsters_slow.png");
         this.health = 10;
     }
+    @Override
+    public void takeDamage(int amount) {
+        super.takeDamage(amount); // Reduces health
+        if (getHealth() <= 0) {
+            Greenfoot.playSound("elitecake_death.wav");
+        }
+    }
 }

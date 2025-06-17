@@ -6,6 +6,8 @@ public class CaramelLaser extends Weapons {
     private int attackSpeed = 10;  // 攻击间隔帧数
     private int fireCooldown = 0;
 
+    private GreenfootSound laserSound = new GreenfootSound("laser.wav");
+    
     public CaramelLaser(int x, int y) {
         super(x, y, 150, 3, 10, 15); // range, damage, attackSpeed, cost
         setImage("CaramelLaser.png");
@@ -13,8 +15,11 @@ public class CaramelLaser extends Weapons {
 
     @Override
     public void act() {
-        super.act();
-
+        if (!isLocked()) {
+            handleDragAndDrop();  // You still need to allow dragging if not placed
+            return;
+        }
+        
         if (target == null || !isInRange(target) || target.getHealth() <= 0) {
             target = findTarget();
         }
@@ -27,6 +32,8 @@ public class CaramelLaser extends Weapons {
                 fireCooldown = attackSpeed;
                 LaserBullet bullet = new LaserBullet(target, baseDamage, this);
                 getWorld().addObject(bullet, getX(), getY());
+                laserSound.setVolume(80); 
+                laserSound.play();
             } else {
                 fireCooldown--;
             }

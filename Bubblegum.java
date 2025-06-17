@@ -43,7 +43,9 @@ public class Bubblegum extends Weapons {
         // 只对未被泡泡困住的敌人有效
         if (!enemy.isBubbled()) {
             enemy.setBubbled(true);
-
+            
+            Greenfoot.playSound("bubblegum_pop.wav");
+            
             // 加一个泡泡覆盖图（你需要在 images 文件夹放 bubble_overlay.png）
             BubbleOverlay overlay = new BubbleOverlay(enemy);
             getWorld().addObject(overlay, enemy.getX(), enemy.getY());
